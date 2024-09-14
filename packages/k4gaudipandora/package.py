@@ -44,4 +44,5 @@ class K4gaudipandora(CMakePackage, Key4hepPackage):
         return [
             f"-DCMAKE_CXX_STANDARD={self.spec['root'].variants['cxxstd'].value}",
             "-DCMAKE_INSTALL_LIBDIR=lib",
+            "-DDD4HEP_RELAX_PYVER=True"
         ]
