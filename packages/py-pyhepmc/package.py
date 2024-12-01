@@ -25,6 +25,12 @@ class PyPyhepmc(PythonPackage):
     )
 
     depends_on("cxx", type="build")
+    # match signature to different compiler versions
+    patch(
+        "https://patch-diff.githubusercontent.com/raw/scikit-hep/pyhepmc/pull/85.patch?full_index=1",
+        sha256="0a87e2da07fbf12a15b2c7025f7ee3fcd5bff540f331e4d820e4ea0ba2e779f2",
+        when="@:2.14.0"     
+    )
 
     depends_on("cmake", type="build")
     depends_on("py-setuptools-scm", type="build")
