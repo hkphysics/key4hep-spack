@@ -143,6 +143,8 @@ def ilc_url_for_version(self, version):
 
 
 def install_setup_script(self, spec, prefix, env_var):
+    print("INSTALL SETUP SCRIPT")
+    return
     """Create a bash setup script that includes all the dependent packages while
     respecting the PATH variable of the user"""
     # get all dependency specs, including compiler

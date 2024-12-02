@@ -11,7 +11,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from common import *
 
 
-class Key4hepStack(BundlePackage, Key4hepPackage):
+class Key4hepStack(BundlePackage):
     """Bundle package to install the Key4hep software stack."""
 
     homepage = "https://cern.ch/key4hep"
@@ -138,51 +138,3 @@ class Key4hepStack(BundlePackage, Key4hepPackage):
     depends_on("py-xgboost", when="+devtools")
     depends_on("benchmark", when="+devtools")
 
-    def setup_run_environment(self, env):
-        # set locale to avoid certain issues with xerces-c
-        # (see https://github.com/key4hep/key4hep-spack/issues/170)
-        env.set("LC_ALL", "C")
-        env.set("KEY4HEP_STACK", os.path.join(self.spec.prefix, "setup.sh"))
-
-        # set vdt, needed for root, see https://github.com/spack/spack/pull/37278
-        if "vdt" in self.spec:
-            env.prepend_path("CPATH", self.spec["vdt"].prefix.include)
-            # When building podio with +rntuple there are warnings constantly without this
-            env.prepend_path("LD_LIBRARY_PATH", self.spec["vdt"].libs.directories[0])
-
-        # Issue on ubuntu, whizard fails to load libomega.so.0
-        if self.compiler.operating_system == "ubuntu22.04":
-            env.prepend_path(
-                "LD_LIBRARY_PATH", self.spec["whizard"].libs.directories[0]
-            )
-        # env variable for OpenDataDetector, see
-        # https://github.com/key4hep/key4hep-spack/issues/526
-        if "opendatadetector" in self.spec:
-            env.set(
-                "OPENDATADETECTOR",
-                self.spec["opendatadetector"].prefix.share + "/OpenDataDetector",
-            )
-            env.set(
-                "OPENDATADETECTOR_DATA",
-                self.spec["opendatadetector"].prefix.share + "/OpenDataDetector",
-            )
-
-        # When changing CMAKE_INSTALL_LIBDIR to lib, everything is installed to
-        # <root>/lib, instead of <root>/lib/root which is the path that is set
-        # in the recipe
-        # ROOT needs to be in LD_LIBRARY_PATH to prevent using system installations
-        env.prepend_path("LD_LIBRARY_PATH", self.spec["root"].prefix.lib)
-        env.prepend_path("PYTHONPATH", self.spec["root"].prefix.lib)
-
-        # Don't use libtools from the system
-        if "libtool" in self.spec:
-            env.prepend_path("PATH", self.spec["libtool"].prefix.bin)
-            env.prepend_path("LD_LIBRARY_PATH", self.spec["libtool"].prefix.lib)
-
-        if "autoconf" in self.spec:
-            env.prepend_path("PATH", self.spec["autoconf"].prefix.bin)
-        if "automake" in self.spec:
-            env.prepend_path("PATH", self.spec["automake"].prefix.bin)
-
-    def install(self, spec, prefix):
-        return install_setup_script(self, spec, prefix, "K4_LATEST_SETUP_PATH")
