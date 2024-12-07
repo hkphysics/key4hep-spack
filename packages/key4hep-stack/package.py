@@ -138,7 +138,9 @@ class Key4hepStack(BundlePackage, Key4hepPackage):
     depends_on("py-xgboost", when="+devtools")
     depends_on("benchmark", when="+devtools")
 
+    # Force use of newest python
     conflicts("py-numpy@:1")
+    conflicts("python@:3.12")
 
     def setup_run_environment(self, env):
         # set locale to avoid certain issues with xerces-c
