@@ -193,8 +193,13 @@ class Key4hepStack(BundlePackage, Key4hepPackage):
     depends_on("opendatadetector")
     depends_on("sdhcalcontent")
 
+
     for variant in ("generators", "ml", "analysis", "devtools"):
         conflicts(f"+{variant}", when="+full", msg=f"+full already enables +{variant}")
+
+    # Force use of newest python
+    conflicts("py-numpy@:1")
+    conflicts("python@:3.12")
 
     def setup_run_environment(self, env):
         # set locale to avoid certain issues with xerces-c
