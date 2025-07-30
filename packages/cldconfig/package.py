@@ -37,6 +37,7 @@ class Cldconfig(CMakePackage):
         sha256="8a15971152391da3b41bbf543316ad6b41949cd3d3c82e334a7a7b86092591da",
     )
 
+    depends_on("c", type="build")
     depends_on("cxx", type="build")
     depends_on("c", type="build", when="@:2025-05-26")
 
