@@ -29,6 +29,7 @@ class FccConfig(CMakePackage):
         sha256="f609d88a1a6fbbdad50b8988012d80b8dad5c5fe31d6788761a7b06e1561736c",
     )
 
+    depends_on("c", type="build")
     depends_on("cxx", type="build")
     depends_on("c", type="build", when="@:0.2")
 
