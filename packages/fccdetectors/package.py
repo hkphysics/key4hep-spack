@@ -19,6 +19,7 @@ class Fccdetectors(CMakePackage, Key4hepPackage):
     version("0.1pre07", tag="v0.1pre07")
     version("0.1pre06", tag="v0.1pre06")
 
+    depends_on("c", type="build")
     depends_on("cxx", type="build")
     depends_on("c", type="build", when="@:0.1pre10")
 
