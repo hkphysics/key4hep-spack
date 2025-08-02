@@ -227,6 +227,8 @@ class Sherpa2(AutotoolsPackage):
     depends_on("hztool", when="+hztool")
     # depends_on('cernlib',   when='+cernlib')
 
+    patch("ignore-texi-errors.patch")
+
     filter_compiler_wrappers("share/SHERPA-MC/makelibs")
 
     for std in _cxxstd_values:

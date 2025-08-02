@@ -1,0 +1,32 @@
+diff --git a/Manual/Makefile.am b/Manual/Makefile.am
+index a76fda0..b3b2844 100644
+--- a/Manual/Makefile.am
++++ b/Manual/Makefile.am
+@@ -86,6 +86,9 @@ dist_html_DATA = \
+ ## we can't use relative paths there because that breaks out-of-source builds
+ AM_MAKEINFOFLAGS = -I $(top_srcdir)
+ 
++## This is needed because there are validation errors in the files
++MAKEINFOFLAGS=--force
++
+ .NOTPARALLEL:
+ update-manpage:
+ 	groff -Tascii -mandoc $(srcdir)/Sherpa.trf > Sherpa.1
+@@ -95,7 +98,7 @@ completion.index: $(srcdir)/*.texi
+ 	$(MAKE) $(AM_MAKEFLAGS) Sherpa.info
+ 	@echo "Creating index for tab completion."
+ 	@rm -f Sherpa.txt* Sherpa.index
+-	-@makeinfo $(AM_MAKEINFOFLAGS) --plaintext -o Sherpa.txt $(srcdir)/Sherpa.texi && \
++	-@makeinfo $(AM_MAKEINFOFLAGS) $(MAKEINFOFLAGS) --plaintext -o Sherpa.txt $(srcdir)/Sherpa.texi && \
+         awk 'BEGIN{ m=0; }{ if (match($$0,"Appendix B Index")>0) { m=m+1; getline; getline; getline;} if (m==2) { print $$0 } }' Sherpa.txt | cut -d ":" -f 1 > completion.index || touch completion.index
+ 	@rm -f Sherpa.txt*
+ 
+@@ -105,7 +108,7 @@ Sherpa.html: $(srcdir)/*.texi $(srcdir)/*.css
+ 	if test -x "$$(which texi2html 2>/dev/null)"; then \
+           texi2html --I $(top_srcdir) --nosec-nav --css-include=$(srcdir)/Sherpa.css $(srcdir)/Sherpa.texi; \
+         elif test -x "$$(which makeinfo 2>/dev/null)"; then \
+-          makeinfo $(AM_MAKEINFOFLAGS) --html --no-split --css-include=$(srcdir)/Sherpa.css -o Sherpa.html $(srcdir)/Sherpa.texi; \
++          makeinfo $(AM_MAKEINFOFLAGS) $(MAKEINFOFLAGS) --html --no-split --css-include=$(srcdir)/Sherpa.css -o Sherpa.html $(srcdir)/Sherpa.texi; \
+         else \
+           touch Sherpa.html; \
+         fi
