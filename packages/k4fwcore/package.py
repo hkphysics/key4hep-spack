@@ -40,7 +40,7 @@ class K4fwcore(CMakePackage, Ilcsoftpackage):
     depends_on("cxx", type="build")
 
     depends_on("gaudi")
-    depends_on("gaudi +gaudialg", when="@:1.0pre19 ^gaudi@37:")
+    depends_on("gaudi +gaudialg", when="@:1.0pre19 ^gaudi@37:38")
     depends_on("root")
     depends_on("podio")
     depends_on("podio@1.0.1:", when="@1.1:")  # linking against podioIO
