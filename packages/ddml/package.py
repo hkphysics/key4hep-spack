@@ -50,4 +50,11 @@ class Ddml(CMakePackage, Key4hepPackage):
             "inference=both"
         ):
             args.append(f"-DCMAKE_SHARED_LINKER_FLAGS={self.compiler.openmp_flag}")
+        if self.spec.satisfies("%gcc@15:"):
+            args.append("-DCMAKE_SHARED_LINKER_FLAGS=-Wl,-z,execstack")
         return args
+
+    def flag_handler(self, name, flags):
+        if self.spec.satisfies("%gcc@15:") and name == "cxxflags":
+            flags.append("-Wl,-z,execstack")
+        return super().flag_handler(name, flags)
