@@ -62,6 +62,8 @@ class K4reccalorimeter(CMakePackage, Key4hepPackage):
         env.prepend_path("PYTHONPATH", self.prefix.python)
         env.prepend_path("PATH", self.prefix.scripts)
         env.set("K4RECCALORIMETER", self.prefix.share.k4RecCalorimeter)
+        env.set("LDFLAGS", "-z noexecstack")
+
 
     def setup_build_environment(self, env):
         self.setup_run_environment(env)
