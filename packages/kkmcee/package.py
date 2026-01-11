@@ -65,6 +65,12 @@ class Kkmcee(AutotoolsPackage):
         sha256="bb7969ba059c48d4c44d1ce49b5388506070b1c6c1c375bdce94b2079a614698",
         when="@5.01.rc",
     )
+    # missing cmath
+    patch(
+        "https://patch-diff.githubusercontent.com/raw/KrakowHEPSoft/KKMCee/pull/3.patch",
+        sha256="5774250c634723973e095c76ff2807f78866bdf506cc070e8bf45df5b6981b3f",
+        when="@:5.01"
+    )
 
     @when("@4")
     def patch(self):
